@@ -1,3 +1,5 @@
+#!/usr/bin/env tsx
+
 import { intro, outro } from '@clack/prompts';
 
 intro(`create-my-app`);
