@@ -1,0 +1,29 @@
+{
+  "name": "@santima10/lazy",
+  "version": "0.0.1",
+  "description": "my own cli tool",
+  "main": "src/index.ts",
+  "bin": "src/index.ts",
+  "scripts": {
+    "start": "node_modules/.bin/tsx src/index.ts",
+    "test": "pnpm test:unit",
+    "test:unit": "jest test/unit"
+  },
+  "keywords": [],
+  "author": {
+    "name": "Santiago Martin Agra",
+    "email": "opensource+lazy@santiagomartin.dev"
+  },
+  "license": "MIT",
+  "dependencies": {
+    "@clack/prompts": "^0.7.0",
+    "tsx": "^4.7.1"
+  },
+  "devDependencies": {
+    "@swc/core": "^1.4.11",
+    "@swc/jest": "^0.2.36",
+    "@types/jest": "^29.5.12",
+    "jest": "^29.7.0",
+    "typescript": "^5.4.3"
+  }
+}
