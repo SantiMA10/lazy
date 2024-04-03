@@ -1,6 +1,6 @@
 {
   "name": "@santima10/lazy",
-  "version": "0.0.7",
+  "version": "0.0.8",
   "description": "my own cli tool",
   "main": "./dist/index.js",
   "bin": "./dist/index.js",
