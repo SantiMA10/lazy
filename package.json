@@ -1,6 +1,6 @@
 {
   "name": "@santima10/lazy",
-  "version": "0.0.3",
+  "version": "0.0.1",
   "description": "my own cli tool",
   "main": "src/index.ts",
   "bin": "src/index.ts",
@@ -28,6 +28,6 @@
   },
   "packageManager": "pnpm@8.15.6",
   "publishConfig": {
-		"access": "public"
-	}
+    "access": "public"
+  }
 }
