@@ -4,6 +4,7 @@
   "description": "my own cli tool",
   "main": "./dist/index.js",
   "bin": "./dist/index.js",
+  "type": "module",
   "scripts": {
     "build": "pkgroll",
     "start": "node_modules/.bin/tsx src/index.ts",
@@ -18,6 +19,8 @@
   "license": "MIT",
   "dependencies": {
     "@clack/prompts": "^0.7.0",
+    "nypm": "^0.3.8",
+    "picocolors": "^1.0.0",
     "tsx": "^4.7.1"
   },
   "devDependencies": {
