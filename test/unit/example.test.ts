@@ -1,5 +1,5 @@
-describe('Test', () => {
-  it('test', async () => {
-    expect(1).toEqual(1);
+describe("Test", () => {
+  it("test", async () => {
+    expect(1).toBe(1);
   });
 });
