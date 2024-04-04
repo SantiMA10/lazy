@@ -5,7 +5,12 @@ on:
     types: [created]
 
 jobs:
+  test:
+    uses: ./.github/workflows/build-test-lint.yml
+  lint:
+    uses: ./.github/workflows/build-test-lint.yml
   publish-npm:
+    needs: [test, lint]
     runs-on: ubuntu-20.04
     steps:
     - uses: actions/checkout@v4
