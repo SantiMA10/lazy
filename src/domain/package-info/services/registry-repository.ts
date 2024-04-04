@@ -1,5 +1,5 @@
-import { PackageInfo } from "../package-info.js";
+import { PackageInfo } from '../package-info.js';
 
 export interface RegistryRepository {
-  findBy(options: { name: string }): Promise<PackageInfo>;
+	findBy(options: { name: string }): Promise<PackageInfo>;
 }
