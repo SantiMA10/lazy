@@ -1,6 +1,6 @@
 {
   "name": "@santima10/lazy",
-  "version": "0.0.15",
+  "version": "0.0.16",
   "main": "./dist/index.js",
   "bin": "./dist/index.js",
   "type": "module",
@@ -35,5 +35,6 @@
   "packageManager": "pnpm@8.15.6",
   "publishConfig": {
     "access": "public"
-  }
+  },
+  "prettier": "@santima10/eslint-config/.prettierrc.json"
 }
