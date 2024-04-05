@@ -1,3 +1,4 @@
+import { readFile } from 'fs/promises';
 import { addDependency, detectPackageManager } from 'nypm';
 import path from 'path';
 
@@ -39,9 +40,9 @@ export class AutoPackageManager implements PackageManager {
 	}
 
 	async isInstalled(packageName: string): Promise<boolean> {
-		const packageJson = await import(path.join(process.cwd(), 'package.json'), {
-			assert: { type: 'json' },
-		});
+		const packageJson = JSON.parse(
+			await readFile(path.join(process.cwd(), 'package.json'), 'utf-8'),
+		);
 		return !!packageJson.dependencies[packageName];
 	}
 }
