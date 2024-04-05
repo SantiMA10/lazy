@@ -12,7 +12,7 @@ describe('ConfigureLinterAndFormatter', () => {
 	beforeEach(() => {
 		packageManager = {
 			detectPackageManager: vi.fn(),
-			install: vi.fn(),
+			installDev: vi.fn(),
 			isInstalled: vi.fn(),
 			addConfiguration: vi.fn(),
 			addConfigurationFile: vi.fn(),

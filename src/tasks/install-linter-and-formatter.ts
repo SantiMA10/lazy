@@ -33,7 +33,7 @@ export class InstallLinterAndFormatter {
 				];
 			}
 
-			await this.packageManager.install(eslintConfig, { withPeerDependencies: true });
+			await this.packageManager.installDev(eslintConfig, { withPeerDependencies: true });
 
 			this.spinner.end({
 				message: `📦 Installed ${color.underline(eslintConfigPackageName)} using ${color.underline(

@@ -15,7 +15,7 @@ describe('InstallLinterAndFormatter', () => {
 	beforeEach(() => {
 		packageManager = {
 			detectPackageManager: vi.fn(),
-			install: vi.fn(),
+			installDev: vi.fn(),
 			isInstalled: vi.fn(),
 			addConfiguration: vi.fn(),
 			addConfigurationFile: vi.fn(),
@@ -53,7 +53,7 @@ describe('InstallLinterAndFormatter', () => {
 
 		await subject.run();
 
-		expect(packageManager.install).toHaveBeenCalledWith(eslintConfigPackage, {
+		expect(packageManager.installDev).toHaveBeenCalledWith(eslintConfigPackage, {
 			withPeerDependencies: true,
 		});
 	});
@@ -72,7 +72,7 @@ describe('InstallLinterAndFormatter', () => {
 		const eslintConfigPackageWithoutNext = new PackageInfoBuilder()
 			.addPeerDependency({ name: 'eslint-plugin-jest', version: '1.0.0' })
 			.build();
-		expect(packageManager.install).toHaveBeenCalledWith(eslintConfigPackageWithoutNext, {
+		expect(packageManager.installDev).toHaveBeenCalledWith(eslintConfigPackageWithoutNext, {
 			withPeerDependencies: true,
 		});
 	});
@@ -82,7 +82,7 @@ describe('InstallLinterAndFormatter', () => {
 		vi.spyOn(packageManager, 'isInstalled').mockResolvedValue(false);
 		const eslintConfigPackage = new PackageInfoBuilder().build();
 		vi.spyOn(registryRepository, 'findBy').mockResolvedValue(eslintConfigPackage);
-		vi.spyOn(packageManager, 'install').mockResolvedValue();
+		vi.spyOn(packageManager, 'installDev').mockResolvedValue();
 
 		await subject.run();
 
@@ -98,7 +98,7 @@ describe('InstallLinterAndFormatter', () => {
 		vi.spyOn(packageManager, 'isInstalled').mockResolvedValue(false);
 		const eslintConfigPackage = new PackageInfoBuilder().build();
 		vi.spyOn(registryRepository, 'findBy').mockResolvedValue(eslintConfigPackage);
-		vi.spyOn(packageManager, 'install').mockRejectedValue(new Error('Boom!'));
+		vi.spyOn(packageManager, 'installDev').mockRejectedValue(new Error('Boom!'));
 
 		await subject.run();
 

@@ -1,5 +1,5 @@
 import { readFile, writeFile } from 'fs/promises';
-import { addDependency, detectPackageManager } from 'nypm';
+import { addDevDependency, detectPackageManager } from 'nypm';
 import path from 'path';
 
 import { PackageInfo } from '../../domain/package-info/package-info.js';
@@ -61,7 +61,7 @@ export class AutoPackageManager implements PackageManager {
 		return packageManager.name;
 	}
 
-	async install(
+	async installDev(
 		packageInfo: PackageInfo,
 		options: { withPeerDependencies: boolean },
 	): Promise<void> {
@@ -81,7 +81,7 @@ export class AutoPackageManager implements PackageManager {
 
 			dependencies.push(...peerDependencies);
 		}
-		await addDependency(dependencies, { silent: true });
+		await addDevDependency(dependencies, { silent: true });
 	}
 
 	async isInstalled(packageName: string): Promise<boolean> {
