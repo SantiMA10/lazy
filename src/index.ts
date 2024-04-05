@@ -1,7 +1,7 @@
 #!/usr/bin/env tsx
 
 import { cancel, confirm, intro, isCancel, note, outro, spinner } from '@clack/prompts';
-import { writeFile } from 'fs/promises';
+import { readFile, writeFile } from 'fs/promises';
 import path from 'path';
 import color from 'picocolors';
 
@@ -72,9 +72,9 @@ const configureEsLint = async () => {
 			},
 		};
 		await writeFile(path.join(process.cwd(), '.eslintrc'), JSON.stringify(eslintrc, null, 2));
-		let { default: packageJson } = await import(path.join(process.cwd(), 'package.json'), {
-			assert: { type: 'json' },
-		});
+		let packageJson = JSON.parse(
+			await readFile(path.join(process.cwd(), 'package.json'), { encoding: 'utf8' }),
+		);
 		if (!packageJson['prettier']) {
 			const newPackageJson = {
 				...packageJson,
@@ -85,9 +85,9 @@ const configureEsLint = async () => {
 				JSON.stringify(newPackageJson, null, 2),
 			);
 		}
-		({ default: packageJson } = await import(path.join(process.cwd(), 'package.json'), {
-			assert: { type: 'json' },
-		}));
+		packageJson = JSON.parse(
+			await readFile(path.join(process.cwd(), 'package.json'), { encoding: 'utf8' }),
+		);
 		if (!packageJson['scripts']['lint']) {
 			const newPackageJson = {
 				...packageJson,
