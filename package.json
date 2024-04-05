@@ -7,7 +7,7 @@
   "scripts": {
     "build": "pkgroll",
     "start": "node_modules/.bin/tsx src/index.ts",
-    "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js",
+    "test": "vitest",
     "test:watch": "pnpm run test --watch",
     "lint": "eslint . --ignore-path .gitignore"
   },
@@ -34,13 +34,11 @@
     "tsx": "^4.7.1"
   },
   "devDependencies": {
-    "@swc/core": "^1.4.11",
-    "@swc/jest": "^0.2.36",
-    "@types/jest": "^29.5.12",
     "@types/node": "^20.12.4",
-    "jest": "^29.7.0",
+    "mock-stdin": "^1.0.0",
     "pkgroll": "^2.0.2",
-    "typescript": "^5.4.3"
+    "typescript": "^5.4.3",
+    "vitest": "^1.4.0"
   },
   "packageManager": "pnpm@8.15.6",
   "publishConfig": {
