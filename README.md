@@ -1,3 +1,7 @@
 # @santima10/lazy
 
-> 🦥 My own lazy cli tool
+> 🦥 My lazy cli to setup projects
+
+```bash
+pnpx @santima10/lazy
+```
