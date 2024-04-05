@@ -5,3 +5,6 @@
 ```bash
 pnpx @santima10/lazy
 ```
+
+## ✨ Inspiration
+- [LazyCURL](https://github.com/EsteveSegura/LazyCURL)
