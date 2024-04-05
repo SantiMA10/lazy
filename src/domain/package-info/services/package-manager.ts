@@ -4,4 +4,10 @@ export interface PackageManager {
 	detectPackageManager(): Promise<string>;
 	install(packageInfo: PackageInfo, options: { withPeerDependencies: boolean }): Promise<void>;
 	isInstalled(packageName: string): Promise<boolean>;
+	addScript(options: { name: string; script: string }): Promise<void>;
+	addConfiguration(options: { name: string; value: string }): Promise<void>;
+	addConfigurationFile(options: {
+		fileName: string;
+		value: Record<string, unknown>;
+	}): Promise<void>;
 }

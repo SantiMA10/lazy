@@ -1,110 +1,64 @@
 #!/usr/bin/env tsx
 
-import { cancel, confirm, intro, isCancel, note, outro, spinner } from '@clack/prompts';
-import { readFile, writeFile } from 'fs/promises';
-import path from 'path';
+import { cancel, confirm, intro, isCancel, note, outro } from '@clack/prompts';
 import color from 'picocolors';
 
 import { AutoPackageManager } from './infrastructure/services/auto-package-manager.js';
 import { NpmRegistryRepository } from './infrastructure/services/npm-registry-repository.js';
+import { CliSpinnerService } from './infrastructure/services/spinner-service.js';
+import { ConfigureLinterAndFormatter } from './tasks/configure-linter-and-formatter.js';
+import { InstallLinterAndFormatter } from './tasks/install-linter-and-formatter.js';
 
 intro(`🦥 Welcome to ${color.underline(`@santima10/lazy`)}`);
 
-const manager = new AutoPackageManager();
-const packageManagerName = await manager.detectPackageManager();
+const packageManager = new AutoPackageManager();
+const packageManagerName = await packageManager.detectPackageManager();
+const spinnerService = new CliSpinnerService();
 
 note(`package manager detected, using: ${color.underline(packageManagerName)}`);
 
-const configureEsLint = async () => {
-	const shouldInstall = await confirm({
+const askInstallLinterAndFormatter = async () => {
+	const shouldInstallLinterAndFormatter = await confirm({
 		message: `🎨 Do you want install ${color.underline(`@santima10/eslint-config`)}?`,
 	});
 
-	if (isCancel(shouldInstall)) {
+	if (isCancel(shouldInstallLinterAndFormatter)) {
 		cancel('👋 See you soon!');
 		process.exit(0);
 	}
 
-	if (shouldInstall) {
-		const isNextJsInstalled = await manager.isInstalled('next');
-
-		const s = spinner();
-		try {
-			s.start(
-				`📦 Installing ${color.underline(`@santima10/eslint-config`)} using ${color.underline(
-					packageManagerName,
-				)}`,
-			);
-
-			const npm = new NpmRegistryRepository();
-			const packageInfo = await npm.findBy({
-				name: '@santima10/eslint-config',
-			});
-
-			if (!isNextJsInstalled) {
-				const lastVersion = packageInfo['dist-tags']['latest'];
-				delete packageInfo?.['versions']?.[lastVersion]?.['peerDependencies'][
-					'@next/eslint-plugin-next'
-				];
-			}
-
-			await manager.install(packageInfo, { withPeerDependencies: true });
-
-			s.stop(
-				`📦 Installed ${color.underline(`@santima10/eslint-config`)} using ${color.underline(
-					packageManagerName,
-				)}`,
-			);
-		} catch (error) {
-			s.stop(color.red(`❌ ${error}`));
-		}
-
-		s.start(`📝 Creating ${color.underline('eslint & prettier')} configuration files`);
-		let eslintPath = '@santima10/eslint-config';
-		if (isNextJsInstalled) {
-			eslintPath = '@santima10/eslint-config/nextjs';
-		}
-
-		const eslintrc = {
-			extends: [eslintPath],
-			env: {
-				node: true,
-			},
-		};
-		await writeFile(path.join(process.cwd(), '.eslintrc'), JSON.stringify(eslintrc, null, 2));
-		let packageJson = JSON.parse(
-			await readFile(path.join(process.cwd(), 'package.json'), { encoding: 'utf8' }),
+	if (shouldInstallLinterAndFormatter) {
+		const installLinterAndFormatter = new InstallLinterAndFormatter(
+			spinnerService,
+			packageManager,
+			new NpmRegistryRepository(),
 		);
-		if (!packageJson['prettier']) {
-			const newPackageJson = {
-				...packageJson,
-				prettier: '@santima10/eslint-config/.prettierrc.json',
-			};
-			await writeFile(
-				path.join(process.cwd(), 'package.json'),
-				JSON.stringify(newPackageJson, null, 2),
-			);
-		}
-		packageJson = JSON.parse(
-			await readFile(path.join(process.cwd(), 'package.json'), { encoding: 'utf8' }),
-		);
-		if (!packageJson['scripts']['lint']) {
-			const newPackageJson = {
-				...packageJson,
-				scripts: {
-					...packageJson['scripts'],
-					lint: 'eslint . --ignore-path .gitignore',
-				},
-			};
-			await writeFile(
-				path.join(process.cwd(), 'package.json'),
-				JSON.stringify(newPackageJson, null, 2),
-			);
-		}
-		s.stop(`📝 ${color.underline('eslint & prettier')} configuration files created`);
+
+		await installLinterAndFormatter.run();
 	}
 };
 
-await configureEsLint();
+const askConfigureLinterAndFormatter = async () => {
+	const shouldConfigureLinterAndFormatter = await confirm({
+		message: `🛠️ Do you want configure ${color.underline(`@santima10/eslint-config`)}?`,
+	});
+
+	if (isCancel(shouldConfigureLinterAndFormatter)) {
+		cancel('👋 See you soon!');
+		process.exit(0);
+	}
+
+	if (shouldConfigureLinterAndFormatter) {
+		const configureLinterAndFormatter = new ConfigureLinterAndFormatter(
+			spinnerService,
+			packageManager,
+		);
+
+		await configureLinterAndFormatter.run();
+	}
+};
+
+await askInstallLinterAndFormatter();
+await askConfigureLinterAndFormatter();
 
 outro(color.bgMagenta('🎉 Happy hacking!'));
