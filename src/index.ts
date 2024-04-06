@@ -6,6 +6,7 @@ import color from 'picocolors';
 import { AutoPackageManager } from './infrastructure/services/auto-package-manager.js';
 import { NpmRegistryRepository } from './infrastructure/services/npm-registry-repository.js';
 import { CliSpinnerService } from './infrastructure/services/spinner-service.js';
+import { ConfigureDetectUnusedFiles } from './tasks/configure-detect-unused-files.js';
 import { ConfigureLinterAndFormatter } from './tasks/configure-linter-and-formatter.js';
 import { InstallLinterAndFormatter } from './tasks/install-linter-and-formatter.js';
 
@@ -19,7 +20,7 @@ note(`package manager detected, using: ${color.underline(packageManagerName)}`);
 
 const askInstallLinterAndFormatter = async () => {
 	const shouldInstallLinterAndFormatter = await confirm({
-		message: `🎨 Do you want install ${color.underline(`@santima10/eslint-config`)}?`,
+		message: `🎨 Do you want to install ${color.underline(`@santima10/eslint-config`)}?`,
 	});
 
 	if (isCancel(shouldInstallLinterAndFormatter)) {
@@ -40,7 +41,7 @@ const askInstallLinterAndFormatter = async () => {
 
 const askConfigureLinterAndFormatter = async () => {
 	const shouldConfigureLinterAndFormatter = await confirm({
-		message: `🛠️ Do you want configure ${color.underline(`@santima10/eslint-config`)}?`,
+		message: `🛠️ Do you want to configure ${color.underline(`@santima10/eslint-config`)}?`,
 	});
 
 	if (isCancel(shouldConfigureLinterAndFormatter)) {
@@ -58,7 +59,28 @@ const askConfigureLinterAndFormatter = async () => {
 	}
 };
 
+const askConfigureDetectUnusedFiles = async () => {
+	const shouldConfigureDetectUnusedFiles = await confirm({
+		message: `🛠️ Do you want to configure ${color.underline(`knip`)} to detect unused files?`,
+	});
+
+	if (isCancel(shouldConfigureDetectUnusedFiles)) {
+		cancel('👋 See you soon!');
+		process.exit(0);
+	}
+
+	if (shouldConfigureDetectUnusedFiles) {
+		const configureDetectUnusedFiles = new ConfigureDetectUnusedFiles(
+			spinnerService,
+			packageManager,
+		);
+
+		await configureDetectUnusedFiles.run();
+	}
+};
+
 await askInstallLinterAndFormatter();
 await askConfigureLinterAndFormatter();
+await askConfigureDetectUnusedFiles();
 
 outro(color.bgMagenta('🎉 Happy hacking!'));
