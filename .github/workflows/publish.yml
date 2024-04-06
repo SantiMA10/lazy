@@ -41,6 +41,8 @@ jobs:
       with:
         node-version-file: ".nvmrc"
         cache: 'pnpm'
+    - name: Install dependencies
+      run: pnpm install
     - name: Publish package on jsr
       run: pnpx jsr publish     
       
