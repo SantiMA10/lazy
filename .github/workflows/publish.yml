@@ -23,8 +23,24 @@ jobs:
       run: pnpm install
     - name: Build package
       run: pnpm build
-    - name: Publish package
+    - name: Publish package on npm
       run: pnpm publish --no-git-checks
       env:
         NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
-  
+  publish-jsr:
+    needs: [build-test-lint]
+    runs-on: ubuntu-20.04
+    permissions:
+      contents: read
+      id-token: write
+    steps:
+    - uses: actions/checkout@v4
+    - uses: pnpm/action-setup@v3
+    - name: Use Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version-file: ".nvmrc"
+        cache: 'pnpm'
+    - name: Publish package on jsr
+      run: pnpx jsr publish     
+      
