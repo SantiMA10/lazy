@@ -11,6 +11,11 @@ export class ConfigureDetectUnusedFiles {
 			message: `📝 Creating ${color.underline('knip.json')} configuration file`,
 		});
 
+		await this.packageManager.addScript({
+			name: 'check:unused',
+			script: 'knip',
+		});
+
 		await this.packageManager.addConfigurationFile({
 			fileName: 'knip.json',
 			value: {

@@ -47,6 +47,15 @@ describe('ConfigureDetectUnusedFiles', () => {
 		});
 	});
 
+	it('adds script', async () => {
+		await subject.run();
+
+		expect(packageManager.addScript).toHaveBeenCalledWith({
+			name: 'check:unused',
+			script: 'knip',
+		});
+	});
+
 	it('ends the spinner', async () => {
 		await subject.run();
 

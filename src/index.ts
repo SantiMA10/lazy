@@ -82,7 +82,7 @@ const askConfigureDetectUnusedFiles = async () => {
 
 const askInstallDetectUnusedFiles = async () => {
 	const shouldInstallDetectUnusedFiles = await confirm({
-		message: `🛠️ Do you want to install ${color.underline(`knip`)} to detect unused files?`,
+		message: `🎨 Do you want to install ${color.underline(`knip`)} to detect unused files?`,
 	});
 
 	if (isCancel(shouldInstallDetectUnusedFiles)) {
