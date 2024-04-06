@@ -16,6 +16,9 @@
     "name": "Santiago Martin Agra",
     "email": "opensource+lazy@santiagomartin.dev"
   },
+  "engines": {
+    "node": ">=20"
+  },
   "license": "MIT",
   "dependencies": {
     "@clack/prompts": "^0.7.0",
