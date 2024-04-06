@@ -7,9 +7,6 @@
       "LICENSE",
       "README.md",
       "src/**/*.ts"
-    ],
-    "exclude": [
-      "test"
     ]
   }
 }
