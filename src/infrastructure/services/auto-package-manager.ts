@@ -62,11 +62,15 @@ export class AutoPackageManager implements PackageManager {
 	}
 
 	async installDev(
-		packageInfo: PackageInfo,
-		options: { withPeerDependencies: boolean },
+		packageInfo: PackageInfo | string[],
+		options?: { withPeerDependencies: boolean },
 	): Promise<void> {
+		if (Array.isArray(packageInfo)) {
+			return addDevDependency(packageInfo, { silent: true });
+		}
+
 		const dependencies = [packageInfo.name];
-		if (options.withPeerDependencies) {
+		if (options?.withPeerDependencies) {
 			const lastVersion = packageInfo['dist-tags']['latest'];
 			if (!lastVersion) {
 				throw new Error('Last version unavailable');
@@ -81,6 +85,7 @@ export class AutoPackageManager implements PackageManager {
 
 			dependencies.push(...peerDependencies);
 		}
+
 		await addDevDependency(dependencies, { silent: true });
 	}
 

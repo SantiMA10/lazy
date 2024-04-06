@@ -2,7 +2,10 @@ import { PackageInfo } from '../package-info.js';
 
 export interface PackageManager {
 	detectPackageManager(): Promise<string>;
-	installDev(packageInfo: PackageInfo, options: { withPeerDependencies: boolean }): Promise<void>;
+	installDev(
+		packageInfo: PackageInfo | string[],
+		options?: { withPeerDependencies: boolean },
+	): Promise<void>;
 	isInstalled(packageName: string): Promise<boolean>;
 	addScript(options: { name: string; script: string }): Promise<void>;
 	addConfiguration(options: { name: string; value: string }): Promise<void>;

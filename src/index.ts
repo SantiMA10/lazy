@@ -8,6 +8,7 @@ import { NpmRegistryRepository } from './infrastructure/services/npm-registry-re
 import { CliSpinnerService } from './infrastructure/services/spinner-service.js';
 import { ConfigureDetectUnusedFiles } from './tasks/configure-detect-unused-files.js';
 import { ConfigureLinterAndFormatter } from './tasks/configure-linter-and-formatter.js';
+import { InstallDetectUnusedFiles } from './tasks/install-detect-unused-files.js';
 import { InstallLinterAndFormatter } from './tasks/install-linter-and-formatter.js';
 
 intro(`🦥 Welcome to ${color.underline(`@santima10/lazy`)}`);
@@ -79,8 +80,26 @@ const askConfigureDetectUnusedFiles = async () => {
 	}
 };
 
+const askInstallDetectUnusedFiles = async () => {
+	const shouldInstallDetectUnusedFiles = await confirm({
+		message: `🛠️ Do you want to install ${color.underline(`knip`)} to detect unused files?`,
+	});
+
+	if (isCancel(shouldInstallDetectUnusedFiles)) {
+		cancel('👋 See you soon!');
+		process.exit(0);
+	}
+
+	if (shouldInstallDetectUnusedFiles) {
+		const installDetectUnusedFiles = new InstallDetectUnusedFiles(spinnerService, packageManager);
+
+		await installDetectUnusedFiles.run();
+	}
+};
+
 await askInstallLinterAndFormatter();
 await askConfigureLinterAndFormatter();
+await askInstallDetectUnusedFiles();
 await askConfigureDetectUnusedFiles();
 
 outro(color.bgMagenta('🎉 Happy hacking!'));
