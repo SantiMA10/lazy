@@ -1,12 +1,5 @@
 {
   "name": "@santima10/lazy",
   "version": "0.0.26",
-  "exports": "./src/index.ts",
-  "publish": {
-    "include": [
-      "LICENSE",
-      "README.md",
-      "src/**/*.ts"
-    ]
-  }
+  "exports": "./src/index.ts"
 }
