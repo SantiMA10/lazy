@@ -10,6 +10,7 @@ import { ConfigureDetectUnusedFiles } from './tasks/configure-detect-unused-file
 import { ConfigureLinterAndFormatter } from './tasks/configure-linter-and-formatter.js';
 import { InstallDetectUnusedFiles } from './tasks/install-detect-unused-files.js';
 import { InstallLinterAndFormatter } from './tasks/install-linter-and-formatter.js';
+import { InstallTestingFramework } from './tasks/install-testing-framework.js';
 
 intro(`🦥 Welcome to ${color.underline(`@santima10/lazy`)}`);
 
@@ -97,9 +98,27 @@ const askInstallDetectUnusedFiles = async () => {
 	}
 };
 
+const askInstallTestingFramework = async () => {
+	const shouldInstallTestingFramework = await confirm({
+		message: `🎨 Do you want to install ${color.underline(`vitest`)} as testing framework?`,
+	});
+
+	if (isCancel(shouldInstallTestingFramework)) {
+		cancel('👋 See you soon!');
+		process.exit(0);
+	}
+
+	if (shouldInstallTestingFramework) {
+		const installTestingFramework = new InstallTestingFramework(spinnerService, packageManager);
+
+		await installTestingFramework.run();
+	}
+};
+
 await askInstallLinterAndFormatter();
 await askConfigureLinterAndFormatter();
 await askInstallDetectUnusedFiles();
 await askConfigureDetectUnusedFiles();
+await askInstallTestingFramework();
 
 outro(color.bgMagenta('🎉 Happy hacking!'));
