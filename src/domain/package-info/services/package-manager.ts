@@ -11,6 +11,6 @@ export interface PackageManager {
 	addConfiguration(options: { name: string; value: string }): Promise<void>;
 	addConfigurationFile(options: {
 		fileName: string;
-		value: Record<string, unknown>;
+		value: Record<string, unknown> | string;
 	}): Promise<void>;
 }

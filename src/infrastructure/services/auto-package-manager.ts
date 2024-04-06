@@ -43,12 +43,16 @@ export class AutoPackageManager implements PackageManager {
 
 	public async addConfigurationFile(options: {
 		fileName: string;
-		value: Record<string, unknown>;
+		value: Record<string, unknown> | string;
 	}): Promise<void> {
-		await writeFile(
-			path.join(process.cwd(), options.fileName),
-			JSON.stringify(options.value, null, 2),
-		);
+		const filePath = path.join(process.cwd(), options.fileName);
+
+		if (typeof options.value === 'string') {
+			await writeFile(filePath, options.value);
+			return;
+		}
+
+		await writeFile(filePath, JSON.stringify(options.value, null, 2));
 	}
 
 	async detectPackageManager(): Promise<string> {

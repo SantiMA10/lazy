@@ -8,7 +8,7 @@
     "build": "pkgroll",
     "start": "node_modules/.bin/tsx src/index.ts",
     "test": "vitest",
-    "test:watch": "pnpm run test --watch",
+    "test:watch": "vitest --watch",
     "lint": "eslint . --ignore-path .gitignore"
   },
   "keywords": [],
@@ -22,6 +22,7 @@
   "license": "MIT",
   "dependencies": {
     "@clack/prompts": "^0.7.0",
+    "comment-json": "^4.2.3",
     "nypm": "^0.3.8",
     "picocolors": "^1.0.0",
     "tsx": "^4.7.1"

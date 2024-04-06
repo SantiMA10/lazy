@@ -4,10 +4,12 @@ import { cancel, confirm, intro, isCancel, note, outro } from '@clack/prompts';
 import color from 'picocolors';
 
 import { AutoPackageManager } from './infrastructure/services/auto-package-manager.js';
+import { LocalTypeScriptConfiguration } from './infrastructure/services/local-typescript-configuration.js';
 import { NpmRegistryRepository } from './infrastructure/services/npm-registry-repository.js';
 import { CliSpinnerService } from './infrastructure/services/spinner-service.js';
 import { ConfigureDetectUnusedFiles } from './tasks/configure-detect-unused-files.js';
 import { ConfigureLinterAndFormatter } from './tasks/configure-linter-and-formatter.js';
+import { ConfigureTestingFramework } from './tasks/configure-testing-framework.js';
 import { InstallDetectUnusedFiles } from './tasks/install-detect-unused-files.js';
 import { InstallLinterAndFormatter } from './tasks/install-linter-and-formatter.js';
 import { InstallTestingFramework } from './tasks/install-testing-framework.js';
@@ -15,9 +17,10 @@ import { InstallTestingFramework } from './tasks/install-testing-framework.js';
 intro(`🦥 Welcome to ${color.underline(`@santima10/lazy`)}`);
 
 const packageManager = new AutoPackageManager();
-const packageManagerName = await packageManager.detectPackageManager();
 const spinnerService = new CliSpinnerService();
+const typeScriptConfiguration = new LocalTypeScriptConfiguration();
 
+const packageManagerName = await packageManager.detectPackageManager();
 note(`package manager detected, using: ${color.underline(packageManagerName)}`);
 
 const askInstallLinterAndFormatter = async () => {
@@ -115,10 +118,32 @@ const askInstallTestingFramework = async () => {
 	}
 };
 
+const askConfigureTestingFramework = async () => {
+	const shouldConfigureTestingFramework = await confirm({
+		message: `🛠️ Do you want to configure ${color.underline(`vitest`)} as testing framework?`,
+	});
+
+	if (isCancel(shouldConfigureTestingFramework)) {
+		cancel('👋 See you soon!');
+		process.exit(0);
+	}
+
+	if (shouldConfigureTestingFramework) {
+		const configureTestingFramework = new ConfigureTestingFramework(
+			spinnerService,
+			packageManager,
+			typeScriptConfiguration,
+		);
+
+		await configureTestingFramework.run();
+	}
+};
+
 await askInstallLinterAndFormatter();
 await askConfigureLinterAndFormatter();
 await askInstallDetectUnusedFiles();
 await askConfigureDetectUnusedFiles();
 await askInstallTestingFramework();
+await askConfigureTestingFramework();
 
 outro(color.bgMagenta('🎉 Happy hacking!'));
